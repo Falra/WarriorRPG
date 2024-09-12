@@ -14,5 +14,6 @@ class WARRIOR_API AWarriorBaseCharacter : public ACharacter
 public:
     // Sets default values for this character's properties
     AWarriorBaseCharacter();
-
+protected:
+    virtual void BeginPlay() override;
 };

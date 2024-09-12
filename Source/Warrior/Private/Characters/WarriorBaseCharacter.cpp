@@ -1,8 +1,8 @@
 ﻿// Valerii Diachenko All Rights Reserved.
 
 
-#include "Warrior/Public/Characters/WarriorBaseCharacter.h"
-
+#include "Characters/WarriorBaseCharacter.h"
+#include "WarriorDebugHelper.h"
 
 // Sets default values
 AWarriorBaseCharacter::AWarriorBaseCharacter()
@@ -12,4 +12,11 @@ AWarriorBaseCharacter::AWarriorBaseCharacter()
     PrimaryActorTick.bStartWithTickEnabled = false;
 
     GetMesh()->bReceivesDecals = false;
+}
+
+void AWarriorBaseCharacter::BeginPlay()
+{
+    Super::BeginPlay();
+
+    Debug::Print("AWarriorBaseCharacter::BeginPlay()");
 }
