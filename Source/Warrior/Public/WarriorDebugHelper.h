@@ -8,7 +8,7 @@ namespace Debug
     {
         if (GEngine)
         {
-            GEngine->AddOnScreenDebugMessage(InKey, 5.0f, Color, Message);
+            GEngine->AddOnScreenDebugMessage(InKey, 5.f, Color, Message);
             UE_LOG(LogTemp, Warning, TEXT("%s"), *Message);
         }
     }
