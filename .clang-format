@@ -1,3 +1,4 @@
+StatementMacros: ['UPROPERTY', 'UFUNCTION', 'UCLASS', 'USTRUCT', 'UENUM', 'UINTERFACE', 'GENERATED_BODY', 'UE_DECLARE_GAMEPLAY_TAG_EXTERN', 'UE_DEFINE_GAMEPLAY_TAG']
 Language: Cpp
 BasedOnStyle: Microsoft
 IndentWidth: '4'
@@ -7,12 +8,23 @@ BreakBeforeBraces: Allman
 ColumnLimit: '140'
 AccessModifierOffset: '-4'
 SortIncludes: false
-AllowShortBlocksOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
 AlignAfterOpenBracket: DontAlign
+ContinuationIndentWidth: 4
 AllowShortFunctionsOnASingleLine: Inline
 PointerAlignment: Left
-AllowShortIfStatementsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: Never
 SpacesBeforeTrailingComments: 2
-AllowShortCaseLabelsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: false
 IndentCaseLabels: true
 AlwaysBreakTemplateDeclarations: Yes
+EmptyLineBeforeAccessModifier: LogicalBlock
+Cpp11BracedListStyle: false
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+ForEachMacros:
+  - for
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+MaxEmptyLinesToKeep: 2
+AlignOperands: false

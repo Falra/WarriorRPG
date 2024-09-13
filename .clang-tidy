@@ -1,37 +1,7 @@
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,-modernize-use-trailing-return-type'
-WarningsAsErrors: true
+Checks:	'-*,bugprone-branch-clone,bugprone-infinite-loop,bugprone-redundant-branch-condition,readability-braces-around-statements,readability-duplicate-include,readability-function-cognitive-complexity,readability-function-size,-readability-magic-numbers,readability-qualified-auto,readability-simplify-boolean-expr,readability-use-anyofallof,readability-else-after-return,modernize-use-override,modernize-use-auto,modernize-use-nullptr,performance-for-range-copy,performance-implicit-conversion-in-loop,performance-unnecessary-value-param'
+WarningsAsErrors: false
 HeaderFilterRegex: ''
-AnalyzeTemporaryDtors: false
-FormatStyle:     google
 CheckOptions:
-  - key:             cert-dcl16-c.NewSuffixes
-    value:           'L;LL;LU;LLU'
-  - key:             cert-oop54-cpp.WarnOnlyIfThisHasSuspiciousField
-    value:           '0'
-  - key:             cppcoreguidelines-explicit-virtual-functions.IgnoreDestructors
-    value:           '1'
-  - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
-    value:           '1'
-  - key:             google-readability-braces-around-statements.ShortStatementLines
-    value:           '1'
-  - key:             google-readability-function-size.StatementThreshold
-    value:           '800'
-  - key:             google-readability-namespace-comments.ShortNamespaceLines
-    value:           '10'
-  - key:             google-readability-namespace-comments.SpacesBeforeComments
-    value:           '2'
-  - key:             modernize-loop-convert.MaxCopySize
-    value:           '16'
-  - key:             modernize-loop-convert.MinConfidence
-    value:           reasonable
-  - key:             modernize-loop-convert.NamingStyle
-    value:           CamelCase
-  - key:             modernize-pass-by-value.IncludeStyle
-    value:           llvm
-  - key:             modernize-replace-auto-ptr.IncludeStyle
-    value:           llvm
-  - key:             modernize-use-nullptr.NullMacros
-    value:           'NULL'
-...
-
+  - key:             readability-function-cognitive-complexity.Threshold
+    value:           75
