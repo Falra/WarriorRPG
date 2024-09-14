@@ -26,7 +26,8 @@ public class Warrior : ModuleRules
 			"Warrior/Public/Characters",
 			"Warrior/Public/Controllers",
 			"Warrior/Public/Gamemodes",
-			"Warrior/Public/DataAssets"
+			"Warrior/Public/DataAssets",
+			"Warrior/Public/Components"
 		});
 		
 		// Uncomment if you are using Slate UI
