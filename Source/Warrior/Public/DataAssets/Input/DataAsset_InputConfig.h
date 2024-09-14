@@ -19,7 +19,7 @@ struct FWarriorInputActionConfig
     FGameplayTag InputTag;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    UInputAction* InputAction;
+    TObjectPtr<UInputAction> InputAction;
 };
 
 /**

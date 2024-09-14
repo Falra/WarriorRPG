@@ -27,7 +27,7 @@ void UWarriorInputComponent::BindNativeInputAction(const UDataAsset_InputConfig*
 {
     check(InInputConfig);
 
-    if (UInputAction* FoundAction =  InInputConfig->FindNativeInputActionByTag(InInputTag))
+    if (UInputAction* FoundAction = InInputConfig->FindNativeInputActionByTag(InInputTag))
     {
         BindAction(FoundAction, TriggerEvent, ContextObject, Callback);
     }
