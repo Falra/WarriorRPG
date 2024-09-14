@@ -1,7 +1,7 @@
 ﻿// Valerii Diachenko All Rights Reserved.
 
 
-#include "Charcters/WarriorHeroCharacter.h"
+#include "Characters/WarriorHeroCharacter.h"
 
 #include "EnhancedInputSubsystems.h"
 #include "WarriorDebugHelper.h"
@@ -9,7 +9,6 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "EnhancedInputSubsystems.h"
 #include "WarriorGameplayTags.h"
 #include "WarriorInputComponent.h"
 #include "Input/DataAsset_InputConfig.h"
@@ -58,8 +57,8 @@ void AWarriorHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
     
     UWarriorInputComponent* WarriorInputComponent = CastChecked<UWarriorInputComponent>(PlayerInputComponent);
 
-    WarriorInputComponent->BindNativeInputAction(InputConfigDataAsset, WarriorGameplayTags::InputTag_Move, ETriggerEvent::Triggered,this, &ThisClass::Input_Move);
-    WarriorInputComponent->BindNativeInputAction(InputConfigDataAsset, WarriorGameplayTags::InputTag_Look, ETriggerEvent::Triggered,this, &ThisClass::Input_Look);
+    WarriorInputComponent->BindNativeInputAction(InputConfigDataAsset, WarriorGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
+    WarriorInputComponent->BindNativeInputAction(InputConfigDataAsset, WarriorGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
 }
 
 void AWarriorHeroCharacter::Input_Move(const FInputActionValue& InputActionValue)
