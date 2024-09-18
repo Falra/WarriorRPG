@@ -30,7 +30,8 @@ public class Warrior : ModuleRules
 			"Warrior/Public/DataAssets",
 			"Warrior/Public/Components",
 			"Warrior/Public/AnimInstances",
-			"Warrior/Public/AbilitySystem"
+			"Warrior/Public/AbilitySystem",
+			"Warrior/Public/Items"
 		});
 		
 		// Uncomment if you are using Slate UI
