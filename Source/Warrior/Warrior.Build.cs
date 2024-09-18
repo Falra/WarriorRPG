@@ -16,7 +16,8 @@ public class Warrior : ModuleRules
 			"InputCore",
 			"EnhancedInput",
 			"GameplayTags",
-			"GameplayTasks"
+			"GameplayTasks", 
+			"GameplayAbilities"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
@@ -28,7 +29,8 @@ public class Warrior : ModuleRules
 			"Warrior/Public/Gamemodes",
 			"Warrior/Public/DataAssets",
 			"Warrior/Public/Components",
-			"Warrior/Public/AnimInstances"
+			"Warrior/Public/AnimInstances",
+			"Warrior/Public/AbilitySystem"
 		});
 		
 		// Uncomment if you are using Slate UI

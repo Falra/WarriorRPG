@@ -7,7 +7,10 @@
 		{
 			"Name": "Warrior",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"GameplayAbilities"
+			]
 		}
 	],
 	"Plugins": [
@@ -17,6 +20,10 @@
 			"TargetAllowList": [
 				"Editor"
 			]
+		},
+		{
+			"Name": "GameplayAbilities",
+			"Enabled": true
 		}
 	]
 }
