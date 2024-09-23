@@ -12,6 +12,7 @@
 #include "WarriorGameplayTags.h"
 #include "WarriorInputComponent.h"
 #include "Input/DataAsset_InputConfig.h"
+#include "StartUpData/DataAsset_StartUpDataBase.h"
 
 AWarriorHeroCharacter::AWarriorHeroCharacter()
 {
@@ -59,6 +60,20 @@ void AWarriorHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
     WarriorInputComponent->BindNativeInputAction(InputConfigDataAsset, WarriorGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
     WarriorInputComponent->BindNativeInputAction(InputConfigDataAsset, WarriorGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+}
+
+void AWarriorHeroCharacter::PossessedBy(AController* NewController)
+{
+    Super::PossessedBy(NewController);
+
+    if (!CharacterStartUpData.IsNull())
+    {
+        UDataAsset_StartUpDataBase* StartUpData = CharacterStartUpData.LoadSynchronous();
+        if (IsValid(StartUpData))
+        {
+            StartUpData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent);
+        }
+    }
 }
 
 void AWarriorHeroCharacter::Input_Move(const FInputActionValue& InputActionValue)
