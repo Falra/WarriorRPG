@@ -6,6 +6,7 @@
 #include "WarriorBaseCharacter.h"
 #include "WarriorHeroCharacter.generated.h"
 
+struct FGameplayTag;
 class UHeroCombatComponent;
 struct FInputActionValue;
 class UDataAsset_InputConfig;
@@ -56,6 +57,10 @@ private:
 
     void Input_Look(const FInputActionValue& InputActionValue);
 
+    void Input_AbilityInputPressed(FGameplayTag InputTag);
+    
+    void Input_AbilityInputReleased(FGameplayTag InputTag);
+    
 #pragma endregion Inputs
 
 };

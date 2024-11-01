@@ -4,6 +4,7 @@
 #include "Characters/WarriorHeroCharacter.h"
 
 #include "EnhancedInputSubsystems.h"
+#include "WarriorAbilitySystemComponent.h"
 #include "WarriorDebugHelper.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -63,6 +64,8 @@ void AWarriorHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
     WarriorInputComponent->BindNativeInputAction(InputConfigDataAsset, WarriorGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
     WarriorInputComponent->BindNativeInputAction(InputConfigDataAsset, WarriorGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+
+    WarriorInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 
 void AWarriorHeroCharacter::PossessedBy(AController* NewController)
@@ -113,4 +116,14 @@ void AWarriorHeroCharacter::Input_Look(const FInputActionValue& InputActionValue
     {
         AddControllerPitchInput(LookAxisVector.Y);
     }
+}
+
+void AWarriorHeroCharacter::Input_AbilityInputPressed(FGameplayTag InputTag)
+{
+    WarriorAbilitySystemComponent->OnAbilityInputPressed(InputTag);
+}
+
+void AWarriorHeroCharacter::Input_AbilityInputReleased(FGameplayTag InputTag)
+{
+    WarriorAbilitySystemComponent->OnAbilityInputReleased(InputTag);
 }
