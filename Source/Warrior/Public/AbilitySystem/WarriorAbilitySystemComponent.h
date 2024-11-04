@@ -23,4 +23,7 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Warrior|Ability", meta = (ApplyLevel = "1"))
     void GrantHeroWeaponAbilities(const TArray<FWarriorHeroAbilitySet>& InAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutAbilityHandles);
+
+    UFUNCTION(BlueprintCallable, Category = "Warrior|Ability")
+    void RemoveHeroWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& InAbilityHandles);
 };
