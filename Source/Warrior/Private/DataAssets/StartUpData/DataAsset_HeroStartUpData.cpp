@@ -17,7 +17,7 @@ void UDataAsset_HeroStartUpData::GiveToAbilitySystemComponent(UWarriorAbilitySys
         {
             continue;
         }
-        FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(HeroAbilitySet.Ability, ApplyLevel);
+        FGameplayAbilitySpec AbilitySpec(HeroAbilitySet.Ability, ApplyLevel);
         AbilitySpec.SourceObject = InASC->GetAvatarActor();
         AbilitySpec.DynamicAbilityTags.AddTag(HeroAbilitySet.InputTag);
         

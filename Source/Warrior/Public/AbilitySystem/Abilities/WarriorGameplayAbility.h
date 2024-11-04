@@ -32,12 +32,12 @@ protected:
     virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
     //~ End UGameplayAbility Interface
 
-    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Warrior Ability")
+    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Warrior|Ability")
     UPawnCombatComponent* GetCombatComponentFromActorInfo() const;
 
-    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Warrior Ability")
+    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Warrior|Ability")
     UWarriorAbilitySystemComponent* GetWarriorAbilitySystemComponentFromActorInfo() const;
     
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Warrior Ability")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Warrior|Ability")
     EWarriorAbilityActivationPolicy AbilityActivationPolicy = EWarriorAbilityActivationPolicy::OnTriggered;
 };

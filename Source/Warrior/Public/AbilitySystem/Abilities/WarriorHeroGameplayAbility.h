@@ -19,13 +19,13 @@ class WARRIOR_API UWarriorHeroGameplayAbility : public UWarriorGameplayAbility
 
 public:
     
-    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Warrior Ability")
+    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Warrior|Ability")
     AWarriorHeroCharacter* GetHeroCharacterFromActorInfo();
 
-    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Warrior Ability")
+    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Warrior|Ability")
     AWarriorHeroController* GetHeroControllerFromActorInfo();
 
-    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Warrior Ability")
+    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Warrior|Ability")
     UHeroCombatComponent* GetHeroCombatComponentFromActorInfo();
 
 private:

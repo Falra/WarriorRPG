@@ -28,7 +28,7 @@ void UDataAsset_StartUpDataBase::GrantAbilities(UWarriorAbilitySystemComponent* 
             continue;
         }
 
-        FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, ApplyLevel);
+        FGameplayAbilitySpec AbilitySpec(Ability, ApplyLevel);
         AbilitySpec.SourceObject = InASC->GetAvatarActor();
         
         InASC->GiveAbility(AbilitySpec);
