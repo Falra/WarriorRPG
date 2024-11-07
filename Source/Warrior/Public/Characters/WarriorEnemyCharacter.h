@@ -20,9 +20,17 @@ public:
     AWarriorEnemyCharacter();
 
     UEnemyCombatComponent* GetCombatComponent() const { return CombatComponent.Get(); }
+
+protected:
+
+    //~ Begin APawn Interface.
+    virtual void PossessedBy(AController* NewController) override;
+    //~ End APawn Interface
     
 private:
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UEnemyCombatComponent> CombatComponent;
+
+    void InitEnemyStartUpData();
 };
