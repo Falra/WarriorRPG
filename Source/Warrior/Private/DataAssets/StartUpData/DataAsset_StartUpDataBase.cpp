@@ -11,6 +11,17 @@ void UDataAsset_StartUpDataBase::GiveToAbilitySystemComponent(UWarriorAbilitySys
 
     GrantAbilities(InASC, ActivateOnGivenAbilities, ApplyLevel);
     GrantAbilities(InASC, ReactiveAbilities, ApplyLevel);
+
+    for (const auto& EffectClass: InitialGameplayEffects)
+    {
+        if (!IsValid(EffectClass))
+        {
+            continue;
+        }
+
+        const auto* GameplayEffect = EffectClass->GetDefaultObject<UGameplayEffect>();
+        InASC->ApplyGameplayEffectToSelf(GameplayEffect, ApplyLevel, InASC->MakeEffectContext());
+    }
 }
 
 void UDataAsset_StartUpDataBase::GrantAbilities(UWarriorAbilitySystemComponent* InASC,
