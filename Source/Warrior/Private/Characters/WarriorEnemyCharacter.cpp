@@ -3,7 +3,6 @@
 
 #include "Characters/WarriorEnemyCharacter.h"
 
-#include "WarriorDebugHelper.h"
 #include "Combat/EnemyCombatComponent.h"
 #include "Engine/AssetManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -52,7 +51,6 @@ void AWarriorEnemyCharacter::InitEnemyStartUpData()
             if (IsValid(StartUpData))
             {
                 StartUpData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent);
-                Debug::Print(TEXT("Enemy Start Up Data loaded"), FColor::Green);
             }
         }));
 }

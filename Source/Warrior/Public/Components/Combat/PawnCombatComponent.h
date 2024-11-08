@@ -8,6 +8,15 @@
 #include "PawnCombatComponent.generated.h"
 
 class AWarriorWeaponBase;
+
+UENUM(BlueprintType)
+enum class EToggleDamageType : uint8
+{
+    CurrentEquipWeapon,
+    LeftHand,
+    RightHand
+};
+
 /**
  * 
  */
@@ -29,6 +38,9 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
     AWarriorWeaponBase* GetCharacterEquippedWeapon() const;
+
+    UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
+    void ToggleWeaponCollision(bool bEnable, EToggleDamageType ToggleDamageType = EToggleDamageType::CurrentEquipWeapon);
 
 private:
     
