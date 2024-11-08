@@ -5,6 +5,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "WarriorAbilitySystemComponent.h"
+#include "Interfaces/PawnCombatInterface.h"
 
 UWarriorAbilitySystemComponent* UWarriorFunctionLibrary::GetWarriorASCFromActor_Native(AActor* Actor)
 {
@@ -43,4 +44,22 @@ bool UWarriorFunctionLibrary::DoesActorHaveTag_Native(AActor* Actor, FGameplayTa
 bool UWarriorFunctionLibrary::K2_DoesActorHaveTag(AActor* Actor, FGameplayTag Tag)
 {
     return DoesActorHaveTag_Native(Actor, Tag);
+}
+
+UPawnCombatComponent* UWarriorFunctionLibrary::GetPawnCombatComponentFromActor_Native(AActor* Actor)
+{
+    if (!IsValid(Actor))
+    {
+        return nullptr;
+    }
+
+    const auto* ActorInterface = Cast<IPawnCombatInterface>(Actor);
+    return ActorInterface ? ActorInterface->GetPawnCombatComponent() : nullptr;
+}
+
+UPawnCombatComponent* UWarriorFunctionLibrary::K2_GetPawnCombatComponentFromActor(AActor* Actor, bool& OutReturnValue)
+{
+    auto* CombatComponent = GetPawnCombatComponentFromActor_Native(Actor);
+    OutReturnValue = !!CombatComponent;
+    return CombatComponent;
 }

@@ -7,6 +7,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "WarriorFunctionLibrary.generated.h"
 
+class UPawnCombatComponent;
 class UWarriorAbilitySystemComponent;
 
 /**
@@ -31,4 +32,9 @@ public:
 
     UFUNCTION(BlueprintCallable, Category="Warrior|Function Library", meta = (DisplayName = "Does Actor Have Tag", ExpandBoolAsExecs = "ReturnValue"))
     static bool K2_DoesActorHaveTag(AActor* Actor, FGameplayTag Tag);
+
+    static UPawnCombatComponent* GetPawnCombatComponentFromActor_Native(AActor* Actor);
+
+    UFUNCTION(BlueprintCallable, Category="Warrior|Function Library", meta = (DisplayName = "Get Pawn Combat Component From Actor", ExpandBoolAsExecs = "OutReturnValue"))
+    static UPawnCombatComponent* K2_GetPawnCombatComponentFromActor(AActor* Actor, bool& OutReturnValue);
 };

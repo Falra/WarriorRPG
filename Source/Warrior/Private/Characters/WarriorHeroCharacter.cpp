@@ -42,6 +42,11 @@ AWarriorHeroCharacter::AWarriorHeroCharacter()
     CombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("CombatComponent"));
 }
 
+UPawnCombatComponent* AWarriorHeroCharacter::GetPawnCombatComponent() const
+{
+    return GetCombatComponent();
+}
+
 void AWarriorHeroCharacter::BeginPlay()
 {
     Super::BeginPlay();

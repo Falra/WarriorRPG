@@ -22,6 +22,10 @@ public:
     AWarriorHeroCharacter();
 
     UHeroCombatComponent* GetCombatComponent() const { return CombatComponent.Get(); }
+
+    //~ Begin IPawnCombatInterface Interface.
+    virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
+    //~ End IPawnCombatInterface Interface
     
 protected:
 
