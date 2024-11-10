@@ -3,6 +3,7 @@
 
 #include "Items/Weapons/WarriorWeaponBase.h"
 
+#include "WarriorDebugHelper.h"
 #include "Components/BoxComponent.h"
 
 AWarriorWeaponBase::AWarriorWeaponBase()
@@ -16,4 +17,42 @@ AWarriorWeaponBase::AWarriorWeaponBase()
     WeaponCollision->SetupAttachment(GetRootComponent());
     WeaponCollision->SetBoxExtent(FVector(20.0f));
     WeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    WeaponCollision->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnWeaponCollisionBeginOverlap);
+    WeaponCollision->OnComponentEndOverlap.AddUniqueDynamic(this, &ThisClass::OnWeaponCollisionEndOverlap);
+}
+
+void AWarriorWeaponBase::OnWeaponCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+    UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    const auto* WeaponOwningPawn = GetInstigator<APawn>();
+
+    checkf(WeaponOwningPawn, TEXT("Forgot to assign an instigator as the owning pawn of the weapon: %s"), *GetName())
+
+    if (const auto* HitPawn = Cast<APawn>(OtherActor))
+    {
+        if (WeaponOwningPawn != HitPawn)
+        {
+            Debug::Print(GetName() + TEXT(" begin overlap with ") + HitPawn->GetName(), FColor::Green);
+        }
+
+        // TODO: Implement hit check for enemy characters
+    }
+}
+
+void AWarriorWeaponBase::OnWeaponCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+    UPrimitiveComponent* OtherComp, int OtherBodyIndex)
+{
+    const auto* WeaponOwningPawn = GetInstigator<APawn>();
+
+    checkf(WeaponOwningPawn,TEXT("Forgot to assign an instigator as the owning pawn of the weapon: %s"),*GetName());
+
+    if (const auto* HitPawn = Cast<APawn>(OtherActor))
+    {
+        if (WeaponOwningPawn != HitPawn)
+        {
+            Debug::Print(GetName() + TEXT(" end overlap with ") + HitPawn->GetName(), FColor::Red);
+        }
+
+        // TODO: Implement hit check for enemy characters
+    }
 }

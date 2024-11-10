@@ -48,15 +48,7 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleDamageType
 
         check(Weapon);
 
-        if (bEnable)
-        {
-            Weapon->GetWeaponCollision()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-            Debug::Print(Weapon->GetName() + TEXT(" collision enabled"), FColor::Green);
-        }
-        else
-        {
-            Weapon->GetWeaponCollision()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-            Debug::Print(Weapon->GetName() + TEXT(" collision disabled"), FColor::Red);
-        }
+        Weapon->GetWeaponCollision()->SetCollisionEnabled(
+            bEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
     }
 }
