@@ -14,6 +14,9 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag WeaponTag, AWarrio
 
     CharacterCarriedWeaponMap.Add(WeaponTag, Weapon);
 
+    Weapon->OnWeaponHitTarget.BindUObject(this, &ThisClass::OnHitTargetActor);
+    Weapon->OnWeaponPulledFromTarget.BindUObject(this, &ThisClass::OnWeaponPulledFromTargetActor);
+
     if (bEquipped)
     {
         EquippedWeaponTag = WeaponTag;
