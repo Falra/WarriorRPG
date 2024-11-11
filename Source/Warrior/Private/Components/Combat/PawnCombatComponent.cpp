@@ -53,5 +53,10 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleDamageType
 
         Weapon->GetWeaponCollision()->SetCollisionEnabled(
             bEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+
+        if (!bEnable)
+        {
+            OverlappedActors.Empty();
+        }
     }
 }
