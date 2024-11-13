@@ -40,4 +40,9 @@ protected:
     
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Warrior|Ability")
     EWarriorAbilityActivationPolicy AbilityActivationPolicy = EWarriorAbilityActivationPolicy::OnTriggered;
+
+    FActiveGameplayEffectHandle ApplyEffectSpecHandleToTarget_Native(AActor* TargetActor, const FGameplayEffectSpecHandle& EffectSpecHandle);
+
+    UFUNCTION(BlueprintCallable, Category = "Warrior|Ability", meta = (DisplayName = "Apply Effect Spec Handle To Target", ExpandBoolAsExecs = "OutSuccess"))
+    FActiveGameplayEffectHandle K2_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& EffectSpecHandle, bool& OutSuccess);
 };
