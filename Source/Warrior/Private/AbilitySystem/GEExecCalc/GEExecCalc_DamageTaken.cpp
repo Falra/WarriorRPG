@@ -2,6 +2,8 @@
 
 
 #include "AbilitySystem/GEExecCalc/GEExecCalc_DamageTaken.h"
+
+#include "WarriorGameplayTags.h"
 #include "AbilitySystem/WarriorAttributeSet.h"
 
 struct FWarriorDamageCapture
@@ -39,4 +41,34 @@ UGEExecCalc_DamageTaken::UGEExecCalc_DamageTaken()
 
     RelevantAttributesToCapture.Add(GetWarriorDamageCapture().AttackPowerDef);
     RelevantAttributesToCapture.Add(GetWarriorDamageCapture().DefensePowerDef);
+}
+
+void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
+    FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
+{
+    const FGameplayEffectSpec& EffectSpec = ExecutionParams.GetOwningSpec();
+
+    // EffectSpec.GetContext().GetSourceObject()
+    // EffectSpec.GetContext().GetAbility()
+    // EffectSpec.GetContext().GetInstigator()
+    // EffectSpec.GetContext().GetEffectCauser()
+    
+    FAggregatorEvaluateParameters EvalParams;
+    EvalParams.SourceTags = EffectSpec.CapturedSourceTags.GetAggregatedTags();
+    EvalParams.TargetTags = EffectSpec.CapturedTargetTags.GetAggregatedTags();
+
+    float AttackPower = 0.f;
+    ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetWarriorDamageCapture().AttackPowerDef, EvalParams, AttackPower);
+
+    float BaseDamage = 0.f;
+    BaseDamage = EffectSpec.GetSetByCallerMagnitude(WarriorGameplayTags::Shared_SetByCaller_BaseDamage, false, BaseDamage);
+
+    float LightAttackCombo = 0.f;
+    LightAttackCombo = EffectSpec.GetSetByCallerMagnitude(WarriorGameplayTags::Player_SetByCaller_AttackType_Light, false, LightAttackCombo);
+
+    float HeavyAttackCombo = 0.f;
+    HeavyAttackCombo = EffectSpec.GetSetByCallerMagnitude(WarriorGameplayTags::Player_SetByCaller_AttackType_Heavy, false, HeavyAttackCombo);
+    
+    float DefensePower = 0.f;
+    ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetWarriorDamageCapture().DefensePowerDef, EvalParams, DefensePower);
 }
