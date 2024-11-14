@@ -63,36 +63,36 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 
     float AttackPower = 0.f;
     ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetWarriorDamageCapture().AttackPowerDef, EvalParams, AttackPower);
-    Debug::Print(TEXT("AttackPower"), AttackPower);
+    //Debug::Print(TEXT("AttackPower"), AttackPower);
 
     float BaseDamage = 0.f;
     BaseDamage = EffectSpec.GetSetByCallerMagnitude(WarriorGameplayTags::Shared_SetByCaller_BaseDamage, false, BaseDamage);
-    Debug::Print(TEXT("BaseDamage"), BaseDamage);
+    //Debug::Print(TEXT("BaseDamage"), BaseDamage);
 
     float LightAttackCombo = 0.f;
     LightAttackCombo = EffectSpec.GetSetByCallerMagnitude(WarriorGameplayTags::Player_SetByCaller_AttackType_Light, false, LightAttackCombo);
-    Debug::Print(TEXT("LightAttackCombo"), LightAttackCombo);
+    //Debug::Print(TEXT("LightAttackCombo"), LightAttackCombo);
 
     float HeavyAttackCombo = 0.f;
     HeavyAttackCombo = EffectSpec.GetSetByCallerMagnitude(WarriorGameplayTags::Player_SetByCaller_AttackType_Heavy, false, HeavyAttackCombo);
-    Debug::Print(TEXT("HeavyAttackCombo"), HeavyAttackCombo);
+    //Debug::Print(TEXT("HeavyAttackCombo"), HeavyAttackCombo);
     
     float DefensePower = 0.f;
     ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetWarriorDamageCapture().DefensePowerDef, EvalParams, DefensePower);
-    Debug::Print(TEXT("DefensePower"), DefensePower);
+    //Debug::Print(TEXT("DefensePower"), DefensePower);
 
     if (LightAttackCombo != 0)
     {
         const float DamageIncreasePercent = (LightAttackCombo - 1) * 0.05f + 1.f;
         BaseDamage *= DamageIncreasePercent;
-        Debug::Print(TEXT("ScaledBaseDamageLight"), BaseDamage);
+        //Debug::Print(TEXT("ScaledBaseDamageLight"), BaseDamage);
     }
 
     if (HeavyAttackCombo != 0)
     {
         const float DamageIncreasePercent = HeavyAttackCombo * 0.15f + 1.f;
         BaseDamage *= DamageIncreasePercent;
-        Debug::Print(TEXT("ScaledBaseDamageHeavy"), BaseDamage);
+        //Debug::Print(TEXT("ScaledBaseDamageHeavy"), BaseDamage);
     }
 
     const float FinalDamage = BaseDamage * AttackPower / DefensePower;
