@@ -6,6 +6,9 @@
 #include "GameplayEffectExtension.h"
 #include "WarriorFunctionLibrary.h"
 #include "WarriorGameplayTags.h"
+#include "Interfaces/PawnUIInterface.h"
+#include "UI/HeroUIComponent.h"
+#include "UI/PawnUIComponent.h"
 
 UWarriorAttributeSet::UWarriorAttributeSet()
 {
@@ -21,16 +24,39 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffec
 {
     Super::PostGameplayEffectExecute(Data);
 
+    if (!CachedPawnUIInterface.IsValid())
+    {
+        CachedPawnUIInterface = TWeakInterfacePtr<IPawnUIInterface>(Data.Target.GetAvatarActor());
+        checkf(CachedPawnUIInterface.IsValid(), TEXT("%s didn't implement IPawnUIInterface"),
+            *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
+        
+        CachedPawnUIComponent = CachedPawnUIInterface.IsValid() ? CachedPawnUIInterface->GetPawnUIComponent() : nullptr;
+
+        checkf(CachedPawnUIComponent.IsValid(), TEXT("Couldn't extract a PawnUIComponent from %s"),
+            *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
+    }
+
     if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
     {
         const float NewCurrentHealth = FMath::Clamp(GetCurrentHealth(), 0.f, GetMaxHealth());
         SetCurrentHealth(NewCurrentHealth);
+
+        if (CachedPawnUIComponent.IsValid())
+        {
+            CachedPawnUIComponent->OnCurrentHealthPercentChanged.Broadcast(NewCurrentHealth/GetMaxHealth());
+        }
     }
 
     if (Data.EvaluatedData.Attribute == GetCurrentRageAttribute())
     {
         const float NewCurrentRage = FMath::Clamp(GetCurrentRage(), 0.f, GetMaxRage());
         SetCurrentRage(NewCurrentRage);
+
+        const auto* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent();
+        if (IsValid(HeroUIComponent))
+        {
+            HeroUIComponent->OnCurrentRagePercentChanged.Broadcast(NewCurrentRage/GetMaxRage());
+        }
     }
 
     if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
@@ -41,7 +67,10 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffec
         const float NewCurrentHealth = FMath::Clamp(OldHealth - Damage, 0.f, GetMaxHealth());
         SetCurrentHealth(NewCurrentHealth);
 
-        // TODO: Notify UI
+        if (CachedPawnUIComponent.IsValid())
+        {
+            CachedPawnUIComponent->OnCurrentHealthPercentChanged.Broadcast(NewCurrentHealth/GetMaxHealth());
+        }
 
         if (NewCurrentHealth == 0.f)
         {
