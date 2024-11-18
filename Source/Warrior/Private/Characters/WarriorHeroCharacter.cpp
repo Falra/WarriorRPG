@@ -15,6 +15,7 @@
 #include "Input/WarriorInputComponent.h"
 #include "Input/DataAsset_InputConfig.h"
 #include "StartUpData/DataAsset_StartUpDataBase.h"
+#include "UI/HeroUIComponent.h"
 
 AWarriorHeroCharacter::AWarriorHeroCharacter()
 {
@@ -40,11 +41,18 @@ AWarriorHeroCharacter::AWarriorHeroCharacter()
     GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
     CombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("CombatComponent"));
+
+    HeroUIComponent = CreateDefaultSubobject<UHeroUIComponent>(TEXT("HeroUIComponent"));
 }
 
 UPawnCombatComponent* AWarriorHeroCharacter::GetPawnCombatComponent() const
 {
     return GetCombatComponent();
+}
+
+UPawnUIComponent* AWarriorHeroCharacter::GetPawnUIComponent() const
+{
+    return HeroUIComponent;
 }
 
 void AWarriorHeroCharacter::BeginPlay()
