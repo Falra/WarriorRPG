@@ -4,10 +4,12 @@
 #include "Characters/WarriorEnemyCharacter.h"
 
 #include "Combat/EnemyCombatComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Engine/AssetManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "StartUpData/DataAsset_StartUpDataBase.h"
 #include "UI/EnemyUIComponent.h"
+#include "Widgets/WarriorWidgetBase.h"
 
 AWarriorEnemyCharacter::AWarriorEnemyCharacter()
 {
@@ -26,6 +28,9 @@ AWarriorEnemyCharacter::AWarriorEnemyCharacter()
     CombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>(TEXT("CombatComponent"));
     
     EnemyUIComponent = CreateDefaultSubobject<UEnemyUIComponent>(TEXT("EnemyUIComponent"));
+
+    EnemyHealthWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("EnemyHealthWidgetComponent"));
+    EnemyHealthWidgetComponent->SetupAttachment(GetMesh());
 }
 
 UPawnCombatComponent* AWarriorEnemyCharacter::GetPawnCombatComponent() const
@@ -41,6 +46,17 @@ UPawnUIComponent* AWarriorEnemyCharacter::GetPawnUIComponent() const
 UEnemyUIComponent* AWarriorEnemyCharacter::GetEnemyUIComponent() const
 {
     return EnemyUIComponent;
+}
+
+void AWarriorEnemyCharacter::BeginPlay()
+{
+    Super::BeginPlay();
+    
+    auto* HealthWidget = Cast<UWarriorWidgetBase>(EnemyHealthWidgetComponent->GetUserWidgetObject());
+    if (IsValid(HealthWidget))
+    {
+        HealthWidget->InitEnemyCreatedWidgets(this);
+    }
 }
 
 void AWarriorEnemyCharacter::PossessedBy(AController* NewController)
