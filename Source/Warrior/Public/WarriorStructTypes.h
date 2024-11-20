@@ -38,6 +38,9 @@ struct FWarriorHeroWeaponData
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
     TArray<FWarriorHeroAbilitySet> DefaultWeaponAbilities;
 
+    UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+    TSoftObjectPtr<UTexture2D> SoftWeaponIconTexture;
+    
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     FScalableFloat WeaponBaseDamage;
 };
