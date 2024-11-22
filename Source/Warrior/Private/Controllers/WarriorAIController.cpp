@@ -3,6 +3,7 @@
 
 #include "Controllers/WarriorAIController.h"
 
+#include "WarriorDebugHelper.h"
 #include "Navigation/CrowdFollowingComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -24,9 +25,24 @@ AWarriorAIController::AWarriorAIController(const FObjectInitializer& ObjectIniti
     EnemyPerceptionComponent->SetDominantSense(UAISenseConfig_Sight::StaticClass());
     EnemyPerceptionComponent->OnTargetPerceptionUpdated.AddUniqueDynamic(this, &ThisClass::OnEnemyPerceptionUpdated);
 
+    SetGenericTeamId(FGenericTeamId(1));
+}
+
+ETeamAttitude::Type AWarriorAIController::GetTeamAttitudeTowards(const AActor& Other) const
+{
+    const auto* PawnToCheck = Cast<const APawn>(&Other);
+    const auto* OtherTeamAgent = Cast<IGenericTeamAgentInterface>(PawnToCheck->GetController());
+    if (OtherTeamAgent && OtherTeamAgent->GetGenericTeamId() != GetGenericTeamId())
+    {
+        return ETeamAttitude::Hostile;
+    }
+    return ETeamAttitude::Friendly;
 }
 
 void AWarriorAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-    
+    if (Stimulus.WasSuccessfullySensed() && Actor)
+    {
+        Debug::Print(Actor->GetActorNameOrLabel() + TEXT(" was sensed"), FColor::Green);
+    }
 }
