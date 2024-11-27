@@ -12,6 +12,7 @@
 class UDataAsset_StartUpDataBase;
 class UWarriorAttributeSet;
 class UWarriorAbilitySystemComponent;
+class UMotionWarpingComponent;
 
 UCLASS()
 class WARRIOR_API AWarriorBaseCharacter : public ACharacter,  public IAbilitySystemInterface, public IPawnCombatInterface, public IPawnUIInterface
@@ -42,6 +43,9 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ability system")
     TObjectPtr<UWarriorAbilitySystemComponent> WarriorAbilitySystemComponent;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Motion Warping")
+    TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent;
+    
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ability system")
     TObjectPtr<UWarriorAttributeSet> WarriorAttributeSet;
 
