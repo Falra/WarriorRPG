@@ -134,10 +134,10 @@ bool UWarriorFunctionLibrary::IsValidBlock(const AActor* InAttacker, const AActo
 
     const bool bValidBlock = DotResult < -0.1f;
 
-    const FString DebugString = FString::Printf(TEXT("Dot Result: %f %s"), DotResult,
-        bValidBlock ? TEXT("Valid Block") : TEXT("InvalidBlock"));
-
-    Debug::Print(DebugString, bValidBlock ? FColor::Green : FColor::Red);
+    // const FString DebugString = FString::Printf(TEXT("Dot Result: %f %s"), DotResult,
+    //     bValidBlock ? TEXT("Valid Block") : TEXT("InvalidBlock"));
+    //
+    // Debug::Print(DebugString, bValidBlock ? FColor::Green : FColor::Red);
 
     return bValidBlock;
 }
