@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GenericTeamAgentInterface.h"
 #include "WarriorAbilitySystemComponent.h"
+#include "WarriorDebugHelper.h"
 #include "WarriorGameplayTags.h"
 #include "Interfaces/PawnCombatInterface.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -85,7 +86,7 @@ float UWarriorFunctionLibrary::GetScalableFloatValueAtLevel(const FScalableFloat
     return InScalableFloat.GetValueAtLevel(InLevel);
 }
 
-FGameplayTag UWarriorFunctionLibrary::ComputeHitReactDirectionTag(AActor* InAttacker, AActor* InVictim, double& OutAngleDifference)
+FGameplayTag UWarriorFunctionLibrary::ComputeHitReactDirectionTag(const AActor* InAttacker, const AActor* InVictim, double& OutAngleDifference)
 {
     check(InAttacker && InVictim);
 
@@ -123,4 +124,20 @@ FGameplayTag UWarriorFunctionLibrary::ComputeHitReactDirectionTag(AActor* InAtta
     }
     
     return WarriorGameplayTags::Shared_Status_HitReact_Front;
+}
+
+bool UWarriorFunctionLibrary::IsValidBlock(const AActor* InAttacker, const AActor* InDefender)
+{
+    check(InAttacker && InDefender);
+
+    const double DotResult = FVector::DotProduct(InAttacker->GetActorForwardVector(), InDefender->GetActorForwardVector());
+
+    const bool bValidBlock = DotResult < -0.1f;
+
+    const FString DebugString = FString::Printf(TEXT("Dot Result: %f %s"), DotResult,
+        bValidBlock ? TEXT("Valid Block") : TEXT("InvalidBlock"));
+
+    Debug::Print(DebugString, bValidBlock ? FColor::Green : FColor::Red);
+
+    return bValidBlock;
 }
