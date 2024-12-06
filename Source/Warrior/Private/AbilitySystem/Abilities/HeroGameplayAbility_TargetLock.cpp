@@ -13,6 +13,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Widgets/WarriorWidgetBase.h"
 #include "Controllers/WarriorHeroController.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void UHeroGameplayAbility_TargetLock::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -30,6 +31,30 @@ void UHeroGameplayAbility_TargetLock::EndAbility(const FGameplayAbilitySpecHandl
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
+void UHeroGameplayAbility_TargetLock::SmoothLookAtTarget(float DeltaTime)
+{
+    const bool bShouldOverrideRotation =
+        !UWarriorFunctionLibrary::DoesActorHaveTag_Native(GetHeroCharacterFromActorInfo(), WarriorGameplayTags::Player_Status_Rolling)
+        &&
+        !UWarriorFunctionLibrary::DoesActorHaveTag_Native(GetHeroCharacterFromActorInfo(), WarriorGameplayTags::Player_Status_Blocking);
+
+    if (!bShouldOverrideRotation)
+    {
+        return;
+    }
+
+    const FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(
+        GetHeroCharacterFromActorInfo()->GetActorLocation(),
+        CurrentLockedActor->GetActorLocation()
+        );
+
+    const FRotator CurrentControlRot = GetHeroControllerFromActorInfo()->GetControlRotation();
+    const FRotator TargetRot = FMath::RInterpTo(CurrentControlRot, LookAtRot, DeltaTime, TargetLockRotationInterpSpeed);
+
+    GetHeroControllerFromActorInfo()->SetControlRotation(FRotator(TargetRot.Pitch, TargetRot.Yaw, 0.f));
+    GetHeroCharacterFromActorInfo()->SetActorRotation(FRotator(0.f, TargetRot.Yaw, 0.f));
+}
+
 void UHeroGameplayAbility_TargetLock::OnTargetLockTick(float DeltaTime)
 {
     if (!CurrentLockedActor.IsValid() ||
@@ -42,6 +67,8 @@ void UHeroGameplayAbility_TargetLock::OnTargetLockTick(float DeltaTime)
     }
     
     SetTargetLockWidgetPosition();
+
+    SmoothLookAtTarget(DeltaTime);
 }
 
 void UHeroGameplayAbility_TargetLock::TryLockOnTarget()
