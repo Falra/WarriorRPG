@@ -6,6 +6,7 @@
 #include "WarriorHeroGameplayAbility.h"
 #include "HeroGameplayAbility_TargetLock.generated.h"
 
+class UWarriorWidgetBase;
 /**
  * 
  */
@@ -28,10 +29,15 @@ private:
 
     AActor* GetNearestTargetFromAvailableActors(const TArray<AActor*>& AvailableActors);
 
+    void DrawTargetLockWidget();
+    
     void CancelTargetLockAbility();
 
     void CleanUp();
 
+    UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
+    TSubclassOf<UWarriorWidgetBase> TargetLockWidgetClass;
+    
     UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
     float BoxTraceDistance = 5000.f;
 
@@ -49,4 +55,7 @@ private:
 
     UPROPERTY(Transient)
     TWeakObjectPtr<AActor> CurrentLockedActor;
+
+    UPROPERTY(Transient)
+    UWarriorWidgetBase* DrawnTargetLockWidget;
 };
