@@ -77,6 +77,12 @@ void UHeroGameplayAbility_TargetLock::OnTargetLockTick(float DeltaTime)
     SmoothLookAtTarget(DeltaTime);
 }
 
+
+void UHeroGameplayAbility_TargetLock::SwitchTarget(const FGameplayTag& InSwitchDirectionTag)
+{
+    GetAvailableActorsToLock();
+}
+
 void UHeroGameplayAbility_TargetLock::TryLockOnTarget()
 {
     GetAvailableActorsToLock();
@@ -102,6 +108,8 @@ void UHeroGameplayAbility_TargetLock::TryLockOnTarget()
 
 void UHeroGameplayAbility_TargetLock::GetAvailableActorsToLock()
 {
+    AvailableActorsToLock.Empty();
+    
     TArray<FHitResult> BoxTraceHits;
     const AWarriorHeroCharacter* HeroCharacter = GetHeroCharacterFromActorInfo();
     const FVector Start = HeroCharacter->GetActorLocation();

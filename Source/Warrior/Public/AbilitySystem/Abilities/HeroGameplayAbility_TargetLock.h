@@ -25,7 +25,10 @@ protected:
 
     UFUNCTION(BlueprintCallable)
     void OnTargetLockTick(float DeltaTime);
-    
+
+    UFUNCTION(BlueprintCallable)
+    void SwitchTarget(const FGameplayTag& InSwitchDirectionTag);
+
 private:
 
     void TryLockOnTarget();
