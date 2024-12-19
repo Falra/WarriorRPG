@@ -3,6 +3,7 @@
 
 #include "Abilities/HeroGameplayAbility_TargetLock.h"
 
+#include "EnhancedInputSubsystems.h"
 #include "WarriorFunctionLibrary.h"
 #include "WarriorGameplayTags.h"
 #include "WarriorHeroCharacter.h"
@@ -21,6 +22,7 @@ void UHeroGameplayAbility_TargetLock::ActivateAbility(const FGameplayAbilitySpec
 {
     TryLockOnTarget();
     InitTargetLockMovement();
+    InitTargetLockMappingContext();
     
     Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
@@ -29,6 +31,7 @@ void UHeroGameplayAbility_TargetLock::EndAbility(const FGameplayAbilitySpecHandl
     const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
     ResetTargetLockMovement();
+    ResetTargetLockMappingContext();
     CleanUp();
     
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
@@ -188,6 +191,33 @@ void UHeroGameplayAbility_TargetLock::InitTargetLockMovement()
 {
     CachedDefaultMaxWalkSpeed = GetHeroCharacterFromActorInfo()->GetCharacterMovement()->MaxWalkSpeed;
     GetHeroCharacterFromActorInfo()->GetCharacterMovement()->MaxWalkSpeed = TargetLockMaxWalkSpeed;
+}
+
+void UHeroGameplayAbility_TargetLock::InitTargetLockMappingContext()
+{
+    const ULocalPlayer* LocalPlayer = GetHeroControllerFromActorInfo()->GetLocalPlayer();
+
+    auto* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
+
+    check(Subsystem)
+
+    Subsystem->AddMappingContext(TargetLockMappingContext, 3);
+}
+
+void UHeroGameplayAbility_TargetLock::ResetTargetLockMappingContext()
+{
+    if (!GetHeroControllerFromActorInfo())
+    {
+        return;
+    }
+
+    const ULocalPlayer* LocalPlayer = GetHeroControllerFromActorInfo()->GetLocalPlayer();
+
+    auto* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
+
+    check(Subsystem)
+
+    Subsystem->RemoveMappingContext(TargetLockMappingContext);
 }
 
 void UHeroGameplayAbility_TargetLock::ResetTargetLockMovement()
