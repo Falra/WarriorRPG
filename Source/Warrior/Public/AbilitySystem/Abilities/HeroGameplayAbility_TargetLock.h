@@ -37,6 +37,8 @@ private:
 
     AActor* GetNearestTargetFromAvailableActors(const TArray<AActor*>& AvailableActors);
 
+    void GetAvailableActorsAroundTarget(TArray<AActor*>& OutActorsOnLeft, TArray<AActor*>& OutActorsOnRight);
+    
     void DrawTargetLockWidget();
 
     void SetTargetLockWidgetPosition();
