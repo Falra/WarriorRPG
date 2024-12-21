@@ -49,11 +49,13 @@ void UHeroGameplayAbility_TargetLock::SmoothLookAtTarget(float DeltaTime)
         return;
     }
 
-    const FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(
+    FRotator LookAtRot = UKismetMathLibrary::FindLookAtRotation(
         GetHeroCharacterFromActorInfo()->GetActorLocation(),
         CurrentLockedActor->GetActorLocation()
         );
 
+    LookAtRot -= FRotator(TargetLockCameraOffsetDistance, 0.f, 0.f);
+    
     const FRotator CurrentControlRot = GetHeroControllerFromActorInfo()->GetControlRotation();
     const FRotator TargetRot = FMath::RInterpTo(CurrentControlRot, LookAtRot, DeltaTime, TargetLockRotationInterpSpeed);
 

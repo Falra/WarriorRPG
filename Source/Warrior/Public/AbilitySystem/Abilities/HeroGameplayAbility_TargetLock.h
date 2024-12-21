@@ -68,6 +68,9 @@ private:
     UInputMappingContext* TargetLockMappingContext;
     
     UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
+    float TargetLockCameraOffsetDistance = 20.f;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
     float BoxTraceDistance = 5000.f;
 
     UPROPERTY(EditDefaultsOnly, Category = "Target Lock")
