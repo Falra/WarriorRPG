@@ -141,3 +141,13 @@ bool UWarriorFunctionLibrary::IsValidBlock(const AActor* InAttacker, const AActo
 
     return bValidBlock;
 }
+
+bool UWarriorFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(AActor* InInstigator, AActor* InTargetActor,
+    const FGameplayEffectSpecHandle& InSpecHandle)
+{
+    auto* SourceASC = GetWarriorASCFromActor_Native(InInstigator);
+    auto* TargetASC = GetWarriorASCFromActor_Native(InTargetActor);
+
+    const FActiveGameplayEffectHandle ActiveGameplayEffectHandle = SourceASC->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC);
+    return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}
