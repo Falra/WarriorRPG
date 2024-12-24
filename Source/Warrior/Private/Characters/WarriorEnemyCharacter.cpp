@@ -77,6 +77,25 @@ void AWarriorEnemyCharacter::PossessedBy(AController* NewController)
     InitEnemyStartUpData();
 }
 
+#if WITH_EDITOR
+
+void AWarriorEnemyCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+    Super::PostEditChangeProperty(PropertyChangedEvent);
+    if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, LeftHandCollisionBoxAttachBoneName))
+    {
+        LeftHandCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+            LeftHandCollisionBoxAttachBoneName);
+    }
+    if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, RightHandCollisionBoxAttachBoneName))
+    {
+        RightHandCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+            RightHandCollisionBoxAttachBoneName);
+    }
+}
+
+#endif
+
 void AWarriorEnemyCharacter::InitEnemyStartUpData()
 {
     if (CharacterStartUpData.IsNull())
