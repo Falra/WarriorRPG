@@ -47,6 +47,10 @@ public:
 
 protected:
 
+    virtual void ToggleCurrentEquippedWeaponCollision(bool bShouldEnable);
+
+    virtual void ToggleBodyCollisionBoxCollision(bool bShouldEnable,EToggleDamageType ToggleDamageType);
+    
     UPROPERTY(Transient)
     TArray<AActor*> OverlappedActors;
     
