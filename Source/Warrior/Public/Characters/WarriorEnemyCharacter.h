@@ -6,6 +6,7 @@
 #include "Characters/WarriorBaseCharacter.h"
 #include "WarriorEnemyCharacter.generated.h"
 
+class UBoxComponent;
 class UWidgetComponent;
 class UEnemyUIComponent;
 class UEnemyCombatComponent;
@@ -23,6 +24,9 @@ public:
 
     UEnemyCombatComponent* GetCombatComponent() const { return CombatComponent.Get(); }
 
+    UBoxComponent* GetLeftHandCollisionBox() const { return LeftHandCollisionBox; }
+    UBoxComponent* GetRightHandCollisionBox() const { return RightHandCollisionBox; }
+    
     //~ Begin IPawnCombatInterface Interface.
     virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
     //~ End IPawnCombatInterface Interface
@@ -48,8 +52,17 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UEnemyUIComponent> EnemyUIComponent;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UBoxComponent> LeftHandCollisionBox;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UBoxComponent> RightHandCollisionBox;
+    
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UWidgetComponent> EnemyHealthWidgetComponent;
 
     void InitEnemyStartUpData();
+
+    UFUNCTION()
+    virtual void OnBodyCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };
