@@ -61,4 +61,8 @@ private:
     
     void OnGameplayEventReceived(const FGameplayEventData* InPayload);
     
+    void OnEnemyClassLoaded();
+    
+    void BroadcastFailureEndTask();
+    
 };

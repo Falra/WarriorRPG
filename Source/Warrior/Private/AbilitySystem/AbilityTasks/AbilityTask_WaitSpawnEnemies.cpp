@@ -5,10 +5,13 @@
 
 #include "AbilitySystemComponent.h"
 
-#include "WarriorDebugHelper.h"
+#include "WarriorEnemyCharacter.h"
+#include "NavigationSystem.h"
+#include "Engine/AssetManager.h"
 
 UAbilityTask_WaitSpawnEnemies* UAbilityTask_WaitSpawnEnemies::WaitSpawnEnemies(UGameplayAbility* OwningAbility, FGameplayTag EventTag,
-    TSoftClassPtr<AWarriorEnemyCharacter> SoftEnemyClassToSpawn, int32 NumToSpawn, const FVector& SpawnOrigin, float RandomSpawnRadius, const FRotator& SpawnRotation)
+    TSoftClassPtr<AWarriorEnemyCharacter> SoftEnemyClassToSpawn, int32 NumToSpawn, const FVector& SpawnOrigin, float RandomSpawnRadius,
+    const FRotator& SpawnRotation)
 {
     auto* Node = NewAbilityTask<UAbilityTask_WaitSpawnEnemies>(OwningAbility);
 
@@ -37,9 +40,67 @@ void UAbilityTask_WaitSpawnEnemies::OnDestroy(bool bInOwnerFinished)
     Super::OnDestroy(bInOwnerFinished);
 }
 
+void UAbilityTask_WaitSpawnEnemies::BroadcastFailureEndTask()
+{
+    if (ShouldBroadcastAbilityTaskDelegates())
+    {
+        DidNotSpawn.Broadcast(TArray<AWarriorEnemyCharacter*>());
+    }
+    EndTask();
+}
+
 void UAbilityTask_WaitSpawnEnemies::OnGameplayEventReceived(const FGameplayEventData* InPayload)
 {
-    Debug::Print(TEXT("Gameplay Event Received"));
+    if (ensure(!CachedSoftEnemyClassToSpawn.IsNull()))
+    {
+        UAssetManager::Get().GetStreamableManager().RequestAsyncLoad(
+            CachedSoftEnemyClassToSpawn.ToSoftObjectPath(),
+            FStreamableDelegate::CreateUObject(this, &ThisClass::OnEnemyClassLoaded)
+            );
+    }
+    else
+    {
+        BroadcastFailureEndTask();
+    }
+}
+
+void UAbilityTask_WaitSpawnEnemies::OnEnemyClassLoaded()
+{
+    UClass* LoadedClass = CachedSoftEnemyClassToSpawn.Get();
+    UWorld* World = GetWorld();
+    if (!LoadedClass || !World)
+    {
+        BroadcastFailureEndTask();
+        return;
+    }
+    
+    TArray<AWarriorEnemyCharacter*> SpawnedEnemies;
+    FActorSpawnParameters SpawnParam;
+    SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+    for (int32 i = 0; i < CachedNumToSpawn; i++)
+    {
+        FVector RandomLocation;
+        UNavigationSystemV1::K2_GetRandomReachablePointInRadius(this, CachedSpawnOrigin, RandomLocation, CachedRandomSpawnRadius);
+        RandomLocation += FVector(0.f, 0.f, 150.f);
+        auto* SpawnedEnemy = World->SpawnActor<AWarriorEnemyCharacter>(LoadedClass, RandomLocation, CachedSpawnRotation, SpawnParam);
+        if (SpawnedEnemy)
+        {
+            SpawnedEnemies.Add(SpawnedEnemy);
+        }
+    }
+
+    if (ShouldBroadcastAbilityTaskDelegates())
+    {
+        if (!SpawnedEnemies.IsEmpty())
+        {
+            OnSpawnFinished.Broadcast(SpawnedEnemies);
+        }
+        else
+        {
+            DidNotSpawn.Broadcast(TArray<AWarriorEnemyCharacter*>());
+        }
+    }
 
     EndTask();
 }
