@@ -21,22 +21,15 @@ void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& I
             continue;
         }
         
-        if (!InputTag.MatchesTag(WarriorGameplayTags::InputTag_Toggleable))
-        {
-            TryActivateAbility(AbilitySpec.Handle);
-            break;
-        }
-            
-        // Toggleable
-        if (AbilitySpec.IsActive())
+        if (InputTag.MatchesTag(WarriorGameplayTags::InputTag_Toggleable) && AbilitySpec.IsActive())
         {
             CancelAbilityHandle(AbilitySpec.Handle);
         }
         else
         {
             TryActivateAbility(AbilitySpec.Handle);
+            break;
         }
-        
         break;
     }
 }
