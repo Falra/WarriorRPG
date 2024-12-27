@@ -43,7 +43,7 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffec
 
         if (CachedPawnUIComponent.IsValid())
         {
-            CachedPawnUIComponent->OnCurrentHealthPercentChanged.Broadcast(NewCurrentHealth/GetMaxHealth());
+            CachedPawnUIComponent->OnCurrentHealthPercentChanged.Broadcast(NewCurrentHealth / GetMaxHealth());
         }
     }
 
@@ -69,7 +69,7 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffec
         const auto* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent();
         if (IsValid(HeroUIComponent))
         {
-            HeroUIComponent->OnCurrentRagePercentChanged.Broadcast(NewCurrentRage/GetMaxRage());
+            HeroUIComponent->OnCurrentRagePercentChanged.Broadcast(NewCurrentRage / GetMaxRage());
         }
     }
 
@@ -83,7 +83,7 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffec
 
         if (CachedPawnUIComponent.IsValid())
         {
-            CachedPawnUIComponent->OnCurrentHealthPercentChanged.Broadcast(NewCurrentHealth/GetMaxHealth());
+            CachedPawnUIComponent->OnCurrentHealthPercentChanged.Broadcast(NewCurrentHealth / GetMaxHealth());
         }
 
         if (NewCurrentHealth == 0.f)
