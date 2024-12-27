@@ -50,14 +50,28 @@ void UWarriorAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& 
     }
 }
 
-void UWarriorAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FWarriorHeroAbilitySet>& InAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutAbilityHandles)
+void UWarriorAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FWarriorHeroAbilitySet>& InDefaultAbilities, const TArray<FWarriorHeroSpecialAbilitySet>& InSpecialAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutAbilityHandles)
 {
-    if (InAbilities.IsEmpty())
+    if (InDefaultAbilities.IsEmpty() && InSpecialAbilities.IsEmpty())
     {
         return;
     }
 
-    for (const FWarriorHeroAbilitySet& AbilitySet : InAbilities)
+    for (const FWarriorHeroAbilitySet& AbilitySet : InDefaultAbilities)
+    {
+        if (!AbilitySet.IsValid())
+        {
+            continue;
+        }
+
+        FGameplayAbilitySpec AbilitySpec(AbilitySet.Ability, ApplyLevel);
+        AbilitySpec.SourceObject = GetAvatarActor();
+        AbilitySpec.DynamicAbilityTags.AddTag(AbilitySet.InputTag);
+
+        OutAbilityHandles.AddUnique(GiveAbility(AbilitySpec));
+    }
+
+    for (const FWarriorHeroSpecialAbilitySet& AbilitySet : InSpecialAbilities)
     {
         if (!AbilitySet.IsValid())
         {
