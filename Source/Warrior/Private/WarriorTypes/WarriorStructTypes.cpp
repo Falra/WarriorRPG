@@ -1,7 +1,7 @@
 ﻿// Valerii Diachenko All Rights Reserved.
 
 
-#include "WarriorStructTypes.h"
+#include "WarriorTypes/WarriorStructTypes.h"
 
 #include "Abilities/WarriorHeroGameplayAbility.h"
 

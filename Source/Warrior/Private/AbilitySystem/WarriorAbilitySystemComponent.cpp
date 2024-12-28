@@ -5,7 +5,7 @@
 
 #include "WarriorGameplayTags.h"
 #include "Abilities/WarriorHeroGameplayAbility.h"
-#include "WarriorStructTypes.h"
+#include "WarriorTypes/WarriorStructTypes.h"
 
 void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InputTag)
 {

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
-#include "WarriorStructTypes.h"
+#include "WarriorTypes/WarriorStructTypes.h"
 #include "WarriorAbilitySystemComponent.generated.h"
 
 /**

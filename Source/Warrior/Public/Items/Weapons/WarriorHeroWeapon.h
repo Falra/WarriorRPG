@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayAbilitySpecHandle.h"
-#include "WarriorStructTypes.h"
+#include "WarriorTypes/WarriorStructTypes.h"
 #include "Items/Weapons/WarriorWeaponBase.h"
 #include "WarriorHeroWeapon.generated.h"
 

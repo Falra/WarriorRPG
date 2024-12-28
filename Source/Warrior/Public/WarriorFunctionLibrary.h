@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "WarriorEnumTypes.h"
+#include "WarriorTypes/WarriorEnumTypes.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "WarriorFunctionLibrary.generated.h"
 
