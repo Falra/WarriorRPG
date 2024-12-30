@@ -6,6 +6,7 @@
 #include "AbilitySystem/Abilities/WarriorGameplayAbility.h"
 #include "WarriorHeroGameplayAbility.generated.h"
 
+class UHeroUIComponent;
 class UHeroCombatComponent;
 class AWarriorHeroController;
 class AWarriorHeroCharacter;
@@ -31,7 +32,9 @@ public:
     UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Warrior|Ability")
     FGameplayEffectSpecHandle MakeHeroDamageSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, float WeaponBaseDamage, FGameplayTag AttackTypeTag, int32 ComboCount);
 
-
+    UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
+    UHeroUIComponent* GetHeroUIComponentFromActorInfo();
+    
     UFUNCTION(BlueprintCallable, Category = "Warrior|Ability")
     bool GetAbilityRemainingCooldownByTag(FGameplayTag InCooldownTag, float& TotalCooldownTime, float& RemainingCooldownTime);
     

@@ -61,6 +61,11 @@ FGameplayEffectSpecHandle UWarriorHeroGameplayAbility::MakeHeroDamageSpecHandle(
     return EffectSpecHandle;
 }
 
+UHeroUIComponent* UWarriorHeroGameplayAbility::GetHeroUIComponentFromActorInfo()
+{
+    return GetHeroCharacterFromActorInfo()->GetHeroUIComponent();
+}
+
 bool UWarriorHeroGameplayAbility::GetAbilityRemainingCooldownByTag(FGameplayTag InCooldownTag, float& TotalCooldownTime, float& RemainingCooldownTime)
 {
     check(InCooldownTag.IsValid());
