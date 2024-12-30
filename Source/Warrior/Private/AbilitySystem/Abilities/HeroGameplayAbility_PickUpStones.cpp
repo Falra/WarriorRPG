@@ -54,3 +54,23 @@ void UHeroGameplayAbility_PickUpStones::CollectStones()
         CancelAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true);
     }
 }
+
+void UHeroGameplayAbility_PickUpStones::ConsumeStones()
+{
+    if (CollectedStones.IsEmpty())
+    {
+        CancelAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true);
+        return;
+    }
+
+    UWarriorAbilitySystemComponent* AbilitySystemComponent = GetWarriorAbilitySystemComponentFromActorInfo();
+    const int32 ApplyLevel = GetAbilityLevel();
+    
+    for (AWarriorStoneBase* CollectedStone : CollectedStones)
+    {
+        if (CollectedStone)
+        {
+            CollectedStone->Consume(AbilitySystemComponent, ApplyLevel);
+        }
+    }
+}

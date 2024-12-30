@@ -7,6 +7,21 @@
 #include "WarriorGameplayTags.h"
 #include "WarriorHeroCharacter.h"
 
+void AWarriorStoneBase::Consume(UWarriorAbilitySystemComponent* AbilitySystemComponent, int32 ApplyLevel)
+{
+    check(StoneGameplayEffectClass);
+
+    const auto* EffectCDO = StoneGameplayEffectClass->GetDefaultObject<UGameplayEffect>();
+	
+    AbilitySystemComponent->ApplyGameplayEffectToSelf(
+        EffectCDO,
+        ApplyLevel,
+        AbilitySystemComponent->MakeEffectContext()
+    );
+    
+    BP_OnStoneConsumed();
+}
+
 void AWarriorStoneBase::OnPickUpCollisionSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
