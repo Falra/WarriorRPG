@@ -81,6 +81,18 @@ void AWarriorSurvialGameMode::SetCurrentSurvialGameModeState(EWarriorSurvialGame
     OnSurvialGameModeStateChanged.Broadcast(CurrentSurvialGameModeState);
 }
 
+void AWarriorSurvialGameMode::RegisterSpawnedEnemies(const TArray<AWarriorEnemyCharacter*>& InEnemiesToRegister)
+{
+    for (AWarriorEnemyCharacter* SpawnedEnemy : InEnemiesToRegister)
+    {
+        if (SpawnedEnemy)
+        {
+            CurrentSpawnedEnemiesCounter++;
+            SpawnedEnemy->OnDestroyed.AddUniqueDynamic(this, &ThisClass::OnEnemyDestroyed);
+        }
+    }
+}
+
 bool AWarriorSurvialGameMode::HasFinishedAllWaves() const
 {
     return CurrentWaveCount > TotalWavesToSpawn;
