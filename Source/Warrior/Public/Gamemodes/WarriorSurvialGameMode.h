@@ -70,6 +70,10 @@ private:
     void SetCurrentSurvialGameModeState(EWarriorSurvialGameModeState InState);
 
     bool HasFinishedAllWaves() const;
+
+    void PreLoadNextWaveEnemies();
+    
+    FWarriorEnemyWaveSpawnerTableRow* GetCurrentWaveSpawnerTableRow() const;
     
     UPROPERTY()
     EWarriorSurvialGameModeState CurrentSurvialGameModeState;
@@ -92,6 +96,9 @@ private:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
     float SpawnNewWaveWaitTime = 5.f;
 
+    UPROPERTY(Transient)
+    TMap<TSoftClassPtr<AWarriorEnemyCharacter>, UClass*> PreLoadedEnemyClassMap;
+    
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
     float SpawnEnemiesDelayTime = 2.f;
 
