@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "WarriorAbilitySystemComponent.h"
+#include "WarriorBaseGameMode.h"
 #include "WarriorDebugHelper.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -96,14 +97,23 @@ void AWarriorHeroCharacter::PossessedBy(AController* NewController)
 {
     Super::PossessedBy(NewController);
 
-    if (!CharacterStartUpData.IsNull())
+    if (CharacterStartUpData.IsNull())
     {
-        UDataAsset_StartUpDataBase* StartUpData = CharacterStartUpData.LoadSynchronous();
-        if (IsValid(StartUpData))
-        {
-            StartUpData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent);
-        }
+        return;
     }
+    
+    UDataAsset_StartUpDataBase* StartUpData = CharacterStartUpData.LoadSynchronous();
+    if (!IsValid(StartUpData))
+    {
+        return;
+    }
+    
+    int32 AbilityApplyLevel = 1;
+    if (const auto* BaseGameMode = GetWorld()->GetAuthGameMode<AWarriorBaseGameMode>())
+    {
+        AbilityApplyLevel = BaseGameMode->GetPlayerAbilityApplyLevelFromDifficulty();
+    }
+    StartUpData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent, AbilityApplyLevel);
 }
 
 void AWarriorHeroCharacter::Input_Move(const FInputActionValue& InputActionValue)

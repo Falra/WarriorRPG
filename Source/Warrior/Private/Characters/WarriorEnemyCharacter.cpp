@@ -3,6 +3,7 @@
 
 #include "Characters/WarriorEnemyCharacter.h"
 
+#include "WarriorBaseGameMode.h"
 #include "WarriorFunctionLibrary.h"
 #include "Combat/EnemyCombatComponent.h"
 #include "Components/BoxComponent.h"
@@ -104,13 +105,19 @@ void AWarriorEnemyCharacter::InitEnemyStartUpData()
         return;
     }
 
+    int32 AbilityApplyLevel = 1;
+    if (const auto* BaseGameMode = GetWorld()->GetAuthGameMode<AWarriorBaseGameMode>())
+    {
+        AbilityApplyLevel = BaseGameMode->GetEnemyAbilityApplyLevelFromDifficulty();
+    }
+    
     UAssetManager::GetStreamableManager().RequestAsyncLoad(CharacterStartUpData.ToSoftObjectPath(),
-        FStreamableDelegate::CreateWeakLambda(this, [this]
+        FStreamableDelegate::CreateWeakLambda(this, [this, AbilityApplyLevel]
         {
             UDataAsset_StartUpDataBase* StartUpData = CharacterStartUpData.Get();
             if (IsValid(StartUpData))
             {
-                StartUpData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent);
+                StartUpData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent, AbilityApplyLevel);
             }
         }));
 }
