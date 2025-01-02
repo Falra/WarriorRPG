@@ -11,6 +11,7 @@ class AWarriorEnemyCharacter;
 UENUM(BlueprintType)
 enum class EWarriorSurvialGameModeState : uint8
 {
+    None,
     WaitSpawnNewWave,
     SpawningNewWave,
     InProgress,
