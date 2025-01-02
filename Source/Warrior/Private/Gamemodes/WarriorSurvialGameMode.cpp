@@ -6,7 +6,6 @@
 #include "NavigationSystem.h"
 #include "Engine/AssetManager.h"
 #include "Characters/WarriorEnemyCharacter.h"
-#include "WarriorDebugHelper.h"
 #include "Engine/TargetPoint.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -93,6 +92,8 @@ void AWarriorSurvialGameMode::PreLoadNextWaveEnemies()
     {
         return;
     }
+
+    PreLoadedEnemyClassMap.Empty();
     
     for (const FWarriorEnemyWaveSpawnerInfo& SpawnerInfo : GetCurrentWaveSpawnerTableRow()->EnemyWaveSpawnerDefinitions)
     {
@@ -109,7 +110,6 @@ void AWarriorSurvialGameMode::PreLoadNextWaveEnemies()
                     if (UClass* LoadedEnemyClass = SpawnerInfo.SoftEnemyClassToSpawn.Get())
                     {
                         PreLoadedEnemyClassMap.Emplace(SpawnerInfo.SoftEnemyClassToSpawn, LoadedEnemyClass);
-                        Debug::Print(LoadedEnemyClass->GetName() + TEXT(" is loaded"));
                     }
                 }
                 )
@@ -162,6 +162,7 @@ int32 AWarriorSurvialGameMode::TrySpawnWaveEnemies()
             auto* SpawnedEnemy = GetWorld()->SpawnActor<AWarriorEnemyCharacter>(LoadedEnemyClass, RandomLocation, SpawnRotation, SpawnParam);
             if (SpawnedEnemy)
             {
+                SpawnedEnemy->OnDestroyed.AddUniqueDynamic(this, &ThisClass::OnEnemyDestroyed);
                 EnemiesSpawnedThisTime++;
                 TotalSpawnedEnemiesThisWaveCounter++;
             }
@@ -179,4 +180,21 @@ int32 AWarriorSurvialGameMode::TrySpawnWaveEnemies()
 bool AWarriorSurvialGameMode::ShouldKeepSpawnEnemies() const
 {
     return TotalSpawnedEnemiesThisWaveCounter < GetCurrentWaveSpawnerTableRow()->TotalEnemyToSpawnThisWave;
+}
+
+void AWarriorSurvialGameMode::OnEnemyDestroyed(AActor* DestroyedActor)
+{
+    CurrentSpawnedEnemiesCounter--;
+
+    if (ShouldKeepSpawnEnemies())
+    {
+        CurrentSpawnedEnemiesCounter += TrySpawnWaveEnemies();
+    }
+
+    else if (CurrentSpawnedEnemiesCounter == 0)
+    {
+        TotalSpawnedEnemiesThisWaveCounter = 0;
+        CurrentSpawnedEnemiesCounter = 0;
+        SetCurrentSurvialGameModeState(EWarriorSurvialGameModeState::WaveCompleted);
+    }
 }
