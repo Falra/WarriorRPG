@@ -65,8 +65,6 @@ UHeroUIComponent* AWarriorHeroCharacter::GetHeroUIComponent() const
 void AWarriorHeroCharacter::BeginPlay()
 {
     Super::BeginPlay();
-
-    Debug::Print("AWarriorHeroCharacter::BeginPlay");
 }
 
 void AWarriorHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

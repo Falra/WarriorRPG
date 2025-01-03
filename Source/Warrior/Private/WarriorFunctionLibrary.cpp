@@ -6,7 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GenericTeamAgentInterface.h"
 #include "WarriorAbilitySystemComponent.h"
-#include "WarriorDebugHelper.h"
+#include "WarriorGameInstance.h"
 #include "WarriorGameplayTags.h"
 #include "Interfaces/PawnCombatInterface.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -190,4 +190,16 @@ void UWarriorFunctionLibrary::CountDown(const UObject* WorldContextObject, float
             FoundAction->CancelAction();
         }
     }
+}
+
+UWarriorGameInstance* UWarriorFunctionLibrary::GetWarriorGameInstance(const UObject* WorldContextObject)
+{
+    if (GEngine)
+    {
+        if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+        {
+            return World->GetGameInstance<UWarriorGameInstance>();
+        }
+    }
+    return nullptr;
 }
