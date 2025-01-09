@@ -69,6 +69,8 @@ protected:
 
     virtual void Tick(float DeltaTime) override;
 
+    virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+
 private:
 
     void SetCurrentSurvialGameModeState(EWarriorSurvialGameModeState InState);
