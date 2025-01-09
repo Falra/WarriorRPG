@@ -11,6 +11,9 @@
 #include "Interfaces/PawnCombatInterface.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "WarriorTypes/WarriorCountDownAction.h"
+#include "Kismet/GameplayStatics.h"
+#include "SaveGame/WarriorSaveGame.h"
+
 
 UWarriorAbilitySystemComponent* UWarriorFunctionLibrary::GetWarriorASCFromActor_Native(AActor* Actor)
 {
@@ -237,4 +240,33 @@ void UWarriorFunctionLibrary::ToggleInputMode(const UObject* WorldContextObject,
         default:
             break;
     }
+}
+
+void UWarriorFunctionLibrary::SaveCurrentGameDifficulty(EWarriorGameDifficulty InDifficultyToSave)
+{
+    USaveGame* SaveGameObject = UGameplayStatics::CreateSaveGameObject(UWarriorSaveGame::StaticClass());
+
+    if (auto* WarriorSaveGameObject = Cast<UWarriorSaveGame>(SaveGameObject))
+    {
+        WarriorSaveGameObject->SavedCurrentGameDifficulty = InDifficultyToSave;
+        const bool bWasSaved = UGameplayStatics::SaveGameToSlot(WarriorSaveGameObject,
+            WarriorGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0);
+
+    }
+}
+
+bool UWarriorFunctionLibrary::TryLoadSavedGameDifficulty(EWarriorGameDifficulty& OutSavedDifficulty)
+{
+    if (UGameplayStatics::DoesSaveGameExist(WarriorGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0))
+    {
+        USaveGame* SaveGameObject = UGameplayStatics::LoadGameFromSlot(WarriorGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(),0);
+        if (const auto* WarriorSaveGameObject = Cast<UWarriorSaveGame>(SaveGameObject))
+        {
+            OutSavedDifficulty = WarriorSaveGameObject->SavedCurrentGameDifficulty;
+
+            return true;
+        }
+    }
+    
+    return false;
 }
